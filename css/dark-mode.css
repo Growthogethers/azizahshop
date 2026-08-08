@@ -1,0 +1,189 @@
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg: #1a1a1a;
+    --paper: #2d2d2d;
+    --ink: #e8e8e8;
+    --muted: #999999;
+    --border: #404040;
+    --primary: #2d6b55;
+    --primary-dark: #1f4d3d;
+    --accent: #d4913a;
+    --accent-dark: #b87d30;
+    --danger: #d45a4a;
+    --success: #4d8b5e;
+    --warn: #d4913a;
+}
+
+[data-theme="dark"] .store-header {
+    background: linear-gradient(135deg, #1f4d3d, #0d281f);
+}
+
+[data-theme="dark"] .card {
+    background: var(--paper);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .cart-bar {
+    background: #0d281f;
+}
+
+[data-theme="dark"] .modal {
+    background: var(--paper);
+}
+
+[data-theme="dark"] .receipt {
+    background: var(--paper);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .pay-box {
+    background: #2d2518;
+    border-color: var(--accent-dark);
+}
+
+[data-theme="dark"] .stat-card {
+    background: var(--paper);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] table {
+    background: var(--paper);
+}
+
+[data-theme="dark"] th {
+    background: #3d3d3d;
+    color: var(--muted);
+}
+
+[data-theme="dark"] .admin-sidebar {
+    background: #0d1f18;
+}
+
+[data-theme="dark"] .login-box {
+    background: var(--paper);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field select,
+[data-theme="dark"] .field textarea {
+    background: #3d3d3d;
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+[data-theme="dark"] .notification {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+[data-theme="dark"] .notification-message {
+    color: var(--ink);
+}
+
+[data-theme="dark"] .card-panel {
+    background: var(--paper);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .upload-box {
+    border-color: var(--border);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 100;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Dark mode - mobile adjustments */
+@media (max-width: 768px) {
+    [data-theme="dark"] .card {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .modal {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .receipt {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .field input,
+    [data-theme="dark"] .field select,
+    [data-theme="dark"] .field textarea {
+        background: #3d3d3d;
+    }
+    
+    [data-theme="dark"] .qris-modal {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .qris-header {
+        background: #1f4d3d;
+    }
+    
+    [data-theme="dark"] .qris-code-container {
+        background: #2d2d2d;
+    }
+    
+    [data-theme="dark"] .qris-amount {
+        background: #2d2518;
+    }
+    
+    [data-theme="dark"] .admin-sidebar {
+        background: #0d1f18;
+    }
+    
+    [data-theme="dark"] .table-wrap th {
+        background: #3d3d3d;
+    }
+    
+    [data-theme="dark"] .stat-card {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .notification {
+        background: var(--paper);
+    }
+    
+    [data-theme="dark"] .promo-section {
+        background: var(--paper);
+        border-color: var(--border);
+    }
+    
+    [data-theme="dark"] .payment-option {
+        background: var(--paper);
+        border-color: var(--border);
+    }
+    
+    [data-theme="dark"] .payment-option.selected {
+        background: #1f4d3d;
+    }
+    
+    [data-theme="dark"] .btn.outline {
+        border-color: var(--border);
+        color: var(--ink);
+    }
+    
+    [data-theme="dark"] .btn.outline:hover {
+        background: #3d3d3d;
+    }
+}

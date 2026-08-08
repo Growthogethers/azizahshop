@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Toko Online - Belanja Mudah & Aman</title>
+    <meta name="description" content="Toko online terpercaya dengan berbagai produk berkualitas">
+
+    <!-- ============ FAVICON / TAB ICON ============ -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1F4D3D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- =========================================== -->
+
+    <meta property="og:title" content="Toko Online - Belanja Mudah & Aman">
+    <meta property="og:description" content="Toko online terpercaya dengan berbagai produk berkualitas">
+    <meta property="og:image" content="https://domain.com/assets/og-image.jpg">
+    <meta property="og:url" content="https://domain.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Toko Online">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Toko Online">
+    <meta name="twitter:description" content="Belanja mudah & aman">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1F4D3D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LDY7BHEB1R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LDY7BHEB1R', {
+        'send_page_view': true,
+        'cookie_flags': 'SameSite=None;Secure',
+        'allow_google_signals': true,
+        'allow_ad_personalization_signals': true
+      });
+      
+      // Track initial page view manually
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname
+      });
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <div style="padding:60px;text-align:center;color:var(--muted);">
+            <div style="font-size:40px;margin-bottom:20px;">⏳</div>
+            <div>Memuat toko...</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <!-- Konfigurasi Firebase -->
+    <script src="firebase/firebase-config.js"></script>
+
+    <!-- JS Modules -->
+    <script type="module" src="js/app.js"></script>
+
+    <!-- Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('✅ SW registered:', registration))
+                    .catch(error => console.warn('⚠️ SW registration failed:', error));
+            });
+        }
+    </script>
+
+    <!-- Test GA4 Connection -->
+    <script>
+      setTimeout(() => {
+        if (window.Analytics) {
+          console.log('🔍 Testing GA4 connection...');
+          const result = window.Analytics.testConnection();
+          if (result) {
+            console.log('✅ GA4 connected successfully');
+          } else {
+            console.error('❌ GA4 not connected');
+          }
+        } else {
+          console.warn('⏳ Analytics not loaded yet');
+        }
+      }, 3000);
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Toko Online",
+        "url": "https://domain.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://domain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</body>
+</html>
