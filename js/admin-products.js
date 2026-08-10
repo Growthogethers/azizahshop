@@ -4,7 +4,7 @@
 // ============================================
 
 import { Notification } from './notification.js';
-import { rupiah, escapeHtml, resizeImage } from './config.js';
+import { rupiah, escapeHtml, resizeImage, CONFIG } from './config.js';
 import { addProduct, updateProduct, deleteProduct } from './db.js';
 import { Storage } from './storage.js';
 import { Analytics } from './analytics.js';
@@ -76,6 +76,7 @@ export class AdminProducts {
               <tr>
                 <th style="width:60px;">Foto</th>
                 <th>Nama</th>
+                <th>Kategori</th>
                 <th>Deskripsi</th>
                 <th>Harga</th>
                 <th>Stok</th>
@@ -108,7 +109,7 @@ export class AdminProducts {
     if (!products || products.length === 0) {
       return `
         <tr>
-          <td colspan="7" style="text-align:center;color:var(--muted);padding:40px;">
+          <td colspan="8" style="text-align:center;color:var(--muted);padding:40px;">
             <div style="font-size:40px;margin-bottom:10px;">📦</div>
             ${this.searchQuery ? 'Tidak ada produk yang cocok' : 'Belum ada produk. Klik "Tambah Produk" untuk memulai.'}
           </td>
@@ -125,6 +126,7 @@ export class AdminProducts {
           }
         </td>
         <td><strong>${escapeHtml(p.name)}</strong></td>
+        <td>${p.category ? `<span class="category-badge">${escapeHtml(p.category)}</span>` : '<span style="color:var(--muted);">-</span>'}</td>
         <td class="product-desc">${this.truncateText(escapeHtml(p.description), 50)}</td>
         <td class="mono">${rupiah(p.price)}</td>
         <td>
@@ -198,6 +200,15 @@ export class AdminProducts {
                          placeholder="Nama produk"
                          maxlength="${this.validationRules.maxNameLength}">
                   <small>Maksimal ${this.validationRules.maxNameLength} karakter</small>
+                </div>
+                <div class="form-group">
+                  <label>Kategori *</label>
+                  <select name="category" required>
+                    <option value="" disabled ${!p?.category ? 'selected' : ''}>Pilih kategori</option>
+                    ${CONFIG.CATEGORIES.map(c => `
+                      <option value="${c}" ${p?.category === c ? 'selected' : ''}>${c}</option>
+                    `).join('')}
+                  </select>
                 </div>
               </div>
 
@@ -418,6 +429,7 @@ export class AdminProducts {
     // Get form data
     const data = {
       name: form.name.value.trim(),
+      category: form.category.value,
       description: form.description.value.trim(),
       price: Number(form.price.value),
       stock: Number(form.stock.value),
@@ -534,6 +546,10 @@ export class AdminProducts {
     
     if (!data.name || data.name.length < 2) {
       errors.push('Nama produk minimal 2 karakter');
+    }
+    
+    if (!data.category) {
+      errors.push('Kategori wajib dipilih');
     }
     
     if (data.name.length > this.validationRules.maxNameLength) {
