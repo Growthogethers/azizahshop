@@ -320,7 +320,8 @@ export class AdminPromos {
     }
 
     async deletePromo(promoId) {
-        if (!confirm('Apakah Anda yakin ingin menghapus promo ini?')) return;
+        const ok = await Notification.confirm('Apakah Anda yakin ingin menghapus promo ini?', { confirmText: 'Hapus', danger: true });
+        if (!ok) return;
 
         try {
             await PromoManager.deletePromo(promoId);
