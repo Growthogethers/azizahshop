@@ -485,7 +485,11 @@ export class AdminProducts {
     }
 
     // Confirmation dialog
-    if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?\n\nTindakan ini tidak dapat dibatalkan.`)) {
+    const ok = await Notification.confirm(
+      `Apakah Anda yakin ingin menghapus produk "${product.name}"?\n\nTindakan ini tidak dapat dibatalkan.`,
+      { confirmText: 'Hapus', danger: true }
+    );
+    if (!ok) {
       return;
     }
 
