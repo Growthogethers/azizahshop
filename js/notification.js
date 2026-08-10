@@ -88,4 +88,64 @@ export class Notification {
     static info(message) {
         this.show(message, 'info');
     }
+
+    // ==========================================
+    // CONFIRM MODAL (pengganti window.confirm())
+    // ==========================================
+    // Pemakaian: const ok = await Notification.confirm('Yakin hapus?');
+    // Mendukung juga opsi: Notification.confirm(msg, { confirmText, cancelText, danger: true })
+    static confirm(message, options = {}) {
+        return new Promise((resolve) => {
+            const existing = document.querySelector('.confirm-overlay');
+            if (existing) existing.remove();
+
+            const {
+                confirmText = 'Ya, Lanjutkan',
+                cancelText = 'Batal',
+                danger = false
+            } = options;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'confirm-overlay';
+
+            // \n dari string message lama diubah jadi <br> biar tetap rapi tampil di modal
+            const safeMessage = String(message)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+
+            overlay.innerHTML = `
+                <div class="confirm-modal" role="alertdialog" aria-modal="true">
+                    <div class="confirm-message">${safeMessage}</div>
+                    <div class="confirm-actions">
+                        <button type="button" class="confirm-btn confirm-cancel">${cancelText}</button>
+                        <button type="button" class="confirm-btn confirm-ok ${danger ? 'danger' : ''}">${confirmText}</button>
+                    </div>
+                </div>
+            `;
+
+            const cleanup = (result) => {
+                overlay.classList.add('confirm-hide');
+                setTimeout(() => overlay.remove(), 200);
+                document.removeEventListener('keydown', onKeydown);
+                resolve(result);
+            };
+
+            const onKeydown = (e) => {
+                if (e.key === 'Escape') cleanup(false);
+                if (e.key === 'Enter') cleanup(true);
+            };
+
+            overlay.querySelector('.confirm-cancel').onclick = () => cleanup(false);
+            overlay.querySelector('.confirm-ok').onclick = () => cleanup(true);
+            overlay.onclick = (e) => {
+                if (e.target === overlay) cleanup(false);
+            };
+            document.addEventListener('keydown', onKeydown);
+
+            document.body.appendChild(overlay);
+            overlay.querySelector('.confirm-ok').focus();
+        });
+    }
 }
