@@ -1,6 +1,8 @@
 // js/config.js
 export const CONFIG = {
     SHIPPING_OPTIONS: ['JNE', 'J&T', 'SiCepat', 'Anteraja', 'Lainnya'],
+    // Kategori produk. Tambah/ubah di sini saja — otomatis kepakai di form admin & filter belanja.
+    CATEGORIES: ['Makanan', 'Minuman', 'Barang', 'Lainnya'],
     // Status yang konsisten dengan alur:
     // Menunggu Pembayaran → Menunggu Konfirmasi → Diproses → Dikirim → Selesai → Dibatalkan
     STATUS_LIST: [
