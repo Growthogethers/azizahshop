@@ -11,7 +11,7 @@ import { Analytics } from './analytics.js';
 import { PromoManager } from './promo.js';
 import { ReviewSystem } from './review.js';
 import { Pagination } from './pagination.js';
-import { ThemeManager } from './theme.js';
+import { ThemeManager } from './theme.js';qris
 import { ErrorTracker } from './error-tracking.js';
 import { QRISPayment } from './qris-payment.js';
 import { Auth } from './auth.js';
@@ -742,6 +742,9 @@ class StoreApp {
         <h1 class="store-title">${escapeHtml(this.settings?.shopName || 'Toko Online')}</h1>
         <p class="store-tag">${escapeHtml(this.settings?.tagline || '')}</p>
         ${this.settings?.enableQRIS !== false ? `
+          <div style="margin-top:10px;font-size:12px;opacity:0.7;">
+            Pesan sekarang, untuk besok
+          </div>
           <div style="margin-top:10px;font-size:12px;opacity:0.7;">
             💳 Pembayaran QRIS tersedia
           </div>
