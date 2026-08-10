@@ -787,18 +787,6 @@ class StoreApp {
         ` : ''}
 
         <div class="filter-controls">
-          <div class="price-filter">
-            <input type="number" min="0" step="1000" placeholder="Harga min"
-                   value="${this.filters.minPrice || ''}"
-                   onchange="window.app.filterByPrice(this.value, document.getElementById('maxPriceInput').value)">
-            <span>–</span>
-            <input type="number" id="maxPriceInput" min="0" step="1000" placeholder="Harga max"
-                   value="${this.filters.maxPrice === Infinity ? '' : this.filters.maxPrice}"
-                   onchange="window.app.filterByPrice(this.previousElementSibling.previousElementSibling.value, this.value)">
-            ${(this.filters.minPrice > 0 || this.filters.maxPrice !== Infinity) ? `
-              <button type="button" class="price-filter-reset" onclick="window.app.filterByPrice(0, null)" title="Reset harga">✕</button>
-            ` : ''}
-          </div>
           <select onchange="window.app.sortProducts(this.value)">
             <option value="newest" ${this.filters.sortBy === 'newest' ? 'selected' : ''}>Terbaru</option>
             <option value="popular" ${this.filters.sortBy === 'popular' ? 'selected' : ''}>Terpopuler</option>
