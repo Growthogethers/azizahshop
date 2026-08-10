@@ -741,7 +741,6 @@ class StoreApp {
       <div class="store-header">
         <h1 class="store-title">${escapeHtml(this.settings?.shopName || 'Toko Online')}</h1>
         <p class="store-tag">${escapeHtml(this.settings?.tagline || '')}</p>
-        ${this.user ? `<div style="margin-top:5px;font-size:12px;opacity:0.7;">👤 ${escapeHtml(this.user.email)}</div>` : ''}
         ${this.settings?.enableQRIS !== false ? `
           <div style="margin-top:10px;font-size:12px;opacity:0.7;">
             💳 Pembayaran QRIS tersedia
