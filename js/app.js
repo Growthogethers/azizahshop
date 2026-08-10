@@ -132,8 +132,9 @@ class StoreApp {
       const pending = JSON.parse(localStorage.getItem('pendingOrders') || '[]');
       if (pending.length > 0) {
         console.log(`📦 ${pending.length} pending orders found in localStorage`);
-        setTimeout(() => {
-          if (confirm(`Terdapat ${pending.length} pesanan yang belum tersimpan. Sync sekarang?`)) {
+        setTimeout(async () => {
+          const ok = await Notification.confirm(`Terdapat ${pending.length} pesanan yang belum tersimpan. Sync sekarang?`);
+          if (ok) {
             this.syncPendingOrders();
           }
         }, 2000);
@@ -467,9 +468,10 @@ class StoreApp {
     this.pendingOrder = order;
 
     // Setup window functions untuk QRIS
-    window.closeQRIS = () => {
+    window.closeQRIS = async () => {
       if (this.currentOrder) {
-        if (confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
+        const ok = await Notification.confirm('Apakah Anda yakin ingin membatalkan pesanan ini?', { confirmText: 'Ya, Batalkan', danger: true });
+        if (ok) {
           if (this.currentOrder.id) {
             this.cancelOrder(this.currentOrder.id);
           }
