@@ -11,7 +11,7 @@ import { Analytics } from './analytics.js';
 import { PromoManager } from './promo.js';
 import { ReviewSystem } from './review.js';
 import { Pagination } from './pagination.js';
-import { ThemeManager } from './theme.js';qris
+import { ThemeManager } from './theme.js';
 import { ErrorTracker } from './error-tracking.js';
 import { QRISPayment } from './qris-payment.js';
 import { Auth } from './auth.js';
