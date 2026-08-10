@@ -743,9 +743,6 @@ class StoreApp {
         <p class="store-tag">${escapeHtml(this.settings?.tagline || '')}</p>
         ${this.settings?.enableQRIS !== false ? `
           <div style="margin-top:10px;font-size:12px;opacity:0.7;">
-            Pesan sekarang, untuk besok
-          </div>
-          <div style="margin-top:10px;font-size:12px;opacity:0.7;">
             💳 Pembayaran QRIS tersedia
           </div>
         ` : ''}
