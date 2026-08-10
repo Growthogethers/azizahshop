@@ -419,7 +419,11 @@ export class AdminSettings {
     if (!file) return;
 
     // Confirmation
-    if (!confirm('⚠️ MEMULIHKAN BACKUP AKAN MENIMPA SELURUH DATA SAAT INI!\n\nTindakan ini tidak dapat dibatalkan. Lanjutkan?')) {
+    const ok = await Notification.confirm(
+      '⚠️ MEMULIHKAN BACKUP AKAN MENIMPA SELURUH DATA SAAT INI!\n\nTindakan ini tidak dapat dibatalkan. Lanjutkan?',
+      { confirmText: 'Lanjutkan', danger: true }
+    );
+    if (!ok) {
       return;
     }
 
@@ -437,7 +441,7 @@ export class AdminSettings {
       const data = JSON.parse(text);
       
       // Validate data
-      if (!this.validateBackupData(data)) {
+      if (!(await this.validateBackupData(data))) {
         throw new Error('File backup tidak valid atau rusak');
       }
       
@@ -484,7 +488,7 @@ export class AdminSettings {
     }
   }
 
-  validateBackupData(data) {
+  async validateBackupData(data) {
     // Required fields
     const requiredFields = ['products', 'orders', 'settings'];
     for (const field of requiredFields) {
@@ -508,7 +512,8 @@ export class AdminSettings {
     // Validate version
     if (data.version !== '2.0.0') {
       console.warn('⚠️ Different backup version:', data.version);
-      if (!confirm(`File backup menggunakan versi ${data.version}. Apakah tetap ingin memulihkan?`)) {
+      const ok = await Notification.confirm(`File backup menggunakan versi ${data.version}. Apakah tetap ingin memulihkan?`);
+      if (!ok) {
         return false;
       }
     }
@@ -587,9 +592,13 @@ export class AdminSettings {
     }
 
     // Konfirmasi sebelum sync
-    if (!confirm('⚠️ Apakah Anda yakin ingin menyinkronkan semua data ke Firebase?\n\n' +
-                 'Tindakan ini akan menimpa data di Firebase dengan data lokal.\n' +
-                 'Pastikan Anda memiliki backup sebelum melanjutkan.')) {
+    const ok = await Notification.confirm(
+      '⚠️ Apakah Anda yakin ingin menyinkronkan semua data ke Firebase?\n\n' +
+      'Tindakan ini akan menimpa data di Firebase dengan data lokal.\n' +
+      'Pastikan Anda memiliki backup sebelum melanjutkan.',
+      { confirmText: 'Sinkronkan', danger: true }
+    );
+    if (!ok) {
       return;
     }
 
@@ -790,7 +799,8 @@ export class AdminSettings {
   }
 
   async logoutAllDevices() {
-    if (!confirm('Apakah Anda yakin ingin logout dari semua perangkat?')) return;
+    const ok = await Notification.confirm('Apakah Anda yakin ingin logout dari semua perangkat?', { danger: true });
+    if (!ok) return;
 
     try {
       // Get current user from Firebase Auth
