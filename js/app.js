@@ -32,6 +32,7 @@ class StoreApp {
     this.pagination = null;
     this.filters = {
       search: '',
+      category: 'all',
       minPrice: 0,
       maxPrice: Infinity,
       sortBy: 'newest'
@@ -185,6 +186,10 @@ class StoreApp {
       );
     }
 
+    if (this.filters.category && this.filters.category !== 'all') {
+      filtered = filtered.filter(p => p.category === this.filters.category);
+    }
+
     filtered = filtered.filter(p =>
       p.price >= this.filters.minPrice &&
       p.price <= this.filters.maxPrice
@@ -213,6 +218,12 @@ class StoreApp {
     Analytics.trackSearch(query, this.products.filter(p =>
       p.name.toLowerCase().includes(query.toLowerCase())
     ).length);
+    this.applyFilters();
+    this.render();
+  }
+
+  filterByCategory(category) {
+    this.filters.category = category || 'all';
     this.applyFilters();
     this.render();
   }
@@ -730,6 +741,7 @@ class StoreApp {
       <div class="store-header">
         <h1 class="store-title">${escapeHtml(this.settings?.shopName || 'Toko Online')}</h1>
         <p class="store-tag">${escapeHtml(this.settings?.tagline || '')}</p>
+        ${this.user ? `<div style="margin-top:5px;font-size:12px;opacity:0.7;">👤 ${escapeHtml(this.user.email)}</div>` : ''}
         ${this.settings?.enableQRIS !== false ? `
           <div style="margin-top:10px;font-size:12px;opacity:0.7;">
             💳 Pembayaran QRIS tersedia
@@ -750,6 +762,9 @@ class StoreApp {
   }
 
   renderFilters() {
+    const usedCategories = [...new Set(this.products.map(p => p.category).filter(Boolean))];
+    const categoryTabs = ['all', ...usedCategories];
+
     return `
       <div class="filters-bar">
         <div class="search-box">
@@ -758,7 +773,32 @@ class StoreApp {
                  value="${escapeHtml(this.filters.search)}"
                  oninput="window.app.searchProducts(this.value)">
         </div>
+
+        ${usedCategories.length > 0 ? `
+          <div class="category-tabs">
+            ${categoryTabs.map(c => `
+              <button type="button" 
+                      class="category-tab ${this.filters.category === c ? 'active' : ''}"
+                      onclick="window.app.filterByCategory('${c}')">
+                ${c === 'all' ? 'Semua' : escapeHtml(c)}
+              </button>
+            `).join('')}
+          </div>
+        ` : ''}
+
         <div class="filter-controls">
+          <div class="price-filter">
+            <input type="number" min="0" step="1000" placeholder="Harga min"
+                   value="${this.filters.minPrice || ''}"
+                   onchange="window.app.filterByPrice(this.value, document.getElementById('maxPriceInput').value)">
+            <span>–</span>
+            <input type="number" id="maxPriceInput" min="0" step="1000" placeholder="Harga max"
+                   value="${this.filters.maxPrice === Infinity ? '' : this.filters.maxPrice}"
+                   onchange="window.app.filterByPrice(this.previousElementSibling.previousElementSibling.value, this.value)">
+            ${(this.filters.minPrice > 0 || this.filters.maxPrice !== Infinity) ? `
+              <button type="button" class="price-filter-reset" onclick="window.app.filterByPrice(0, null)" title="Reset harga">✕</button>
+            ` : ''}
+          </div>
           <select onchange="window.app.sortProducts(this.value)">
             <option value="newest" ${this.filters.sortBy === 'newest' ? 'selected' : ''}>Terbaru</option>
             <option value="popular" ${this.filters.sortBy === 'popular' ? 'selected' : ''}>Terpopuler</option>
@@ -1047,6 +1087,7 @@ window.app = {
   // Filters & Sort
   searchProducts: app.searchProducts.bind(app),
   sortProducts: app.sortProducts.bind(app),
+  filterByCategory: app.filterByCategory.bind(app),
   filterByPrice: app.filterByPrice.bind(app),
 
   // Promo
