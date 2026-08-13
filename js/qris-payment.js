@@ -48,7 +48,7 @@ export class QRISPayment {
                     
                     <div class="qris-body">
                         <div class="qris-code-container">
-                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%22100%22 y=%22100%22 font-size=%2224%22 text-anchor=%22middle%22 dy=%22.3em%22>📱</text><text x=%22100%22 y=%22130%22 font-size=%2212%22 text-anchor=%22middle%22 fill=%22%23666%22>QRIS</text></svg>'">
+                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" onerror="this.src='data:image/qris-static.png QRIS</text></svg>'">
                             <div class="qris-label">Scan QR Code dengan e-wallet atau mobile banking</div>
                         </div>
 
