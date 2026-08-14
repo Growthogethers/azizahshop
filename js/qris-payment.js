@@ -37,7 +37,7 @@ export class QRISPayment {
         const orderIdDisplay = orderId.slice(0, 8).toUpperCase() || 'PENDING';
         const customerName = orderData.customer?.nama || 'Pelanggan';
         const itemCount = orderData.items?.length || 0;
-        
+
         return `
             <div class="qris-overlay" id="qrisOverlay">
                 <div class="qris-modal">
@@ -48,8 +48,11 @@ export class QRISPayment {
                     
                     <div class="qris-body">
                         <div class="qris-code-container">
-                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" onerror="this.src='data:image/qris-static.jpeg QRIS</text></svg>'">
+                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" id="qrisImage" onerror="this.src='data:image/qris-static.jpeg QRIS</text></svg>'">
                             <div class="qris-label">Scan QR Code dengan e-wallet atau mobile banking</div>
+                            <button class="qris-download-btn" onclick="window.downloadQR()">
+                                ⬇️ Download QR
+                            </button>
                         </div>
 
                         <div class="qris-info">
@@ -106,6 +109,38 @@ export class QRISPayment {
                 </div>
             </div>
         `;
+    }
+
+    /**
+     * Download gambar QRIS ke perangkat pengguna.
+     * Dipanggil lewat window.downloadQR() dari tombol di modal.
+     * @param {Object} [orderData] - opsional, dipakai untuk membuat nama file yang unik
+     */
+    static async downloadQR(orderData) {
+        const qris = this.getStaticQR();
+        const orderId = orderData?.id ? orderData.id.slice(0, 8).toUpperCase() : 'QRIS';
+        const fileName = `QRIS-${orderId}-${Date.now()}.jpg`;
+
+        try {
+            // Fetch gambar sebagai blob agar bisa didownload walau berbeda origin/CDN
+            const response = await fetch(qris.imageUrl);
+            if (!response.ok) throw new Error('Gagal mengambil gambar QR');
+            const blob = await response.blob();
+
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error('❌ Gagal download QR:', err);
+            // Fallback: buka gambar di tab baru agar user bisa simpan manual
+            window.open(qris.imageUrl, '_blank');
+            alert('Tidak bisa download otomatis. Gambar QR dibuka di tab baru, silakan tekan lama / klik kanan untuk menyimpan.');
+        }
     }
 
     static formatRupiah(amount) {
