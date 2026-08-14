@@ -882,22 +882,24 @@ class StoreApp {
     const qty = this.cartQty(p.id);
     return `
       <div class="overlay" onclick="if(event.target.classList.contains('overlay')) window.app.closeProduct()">
-        <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal product-modal" onclick="event.stopPropagation()">
           <div class="modal-close"><button onclick="window.app.closeProduct()">✕</button></div>
           <div class="modal-inner">
-            ${p.image ? `<img class="modal-img" src="${p.image}" alt="${escapeHtml(p.name)}">` : `<div class="modal-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;">📷 Tanpa foto</div>`}
+            ${p.image ? `<img class="modal-img" src="${p.image}" alt="${escapeHtml(p.name)}">` : `<div class="modal-img modal-img-empty">📷 Tanpa foto</div>`}
             <h3 class="modal-title">${escapeHtml(p.name)}</h3>
             <div class="modal-price">${rupiah(p.price)}</div>
             <div class="modal-desc">${escapeHtml(p.description || 'Tidak ada deskripsi.')}</div>
             <div class="modal-stock">${p.stock > 0 ? `✅ Stok tersedia: ${p.stock}` : '❌ Stok habis'}</div>
-            ${p.stock <= 0 ? `<button class="btn" disabled style="opacity:.5;">Stok Habis</button>` :
-              qty === 0 ? `<button class="btn" onclick="window.app.addToCart('${p.id}',1)">Tambah ke Keranjang</button>` :
-                `<div class="qty-row" style="justify-content:center;gap:14px;margin-top:10px;">
-                  <button onclick="window.app.addToCart('${p.id}',-1)">−</button>
-                  <span style="font-size:16px;font-weight:600;">${qty}</span>
-                  <button onclick="window.app.addToCart('${p.id}',1)">+</button>
-                </div>`
-            }
+            <div class="modal-action">
+              ${p.stock <= 0 ? `<button class="btn" disabled style="opacity:.5;">Stok Habis</button>` :
+                qty === 0 ? `<button class="btn" onclick="window.app.addToCart('${p.id}',1)">Tambah ke Keranjang</button>` :
+                  `<div class="qty-row" style="justify-content:center;gap:14px;">
+                    <button onclick="window.app.addToCart('${p.id}',-1)">−</button>
+                    <span style="font-size:16px;font-weight:600;">${qty}</span>
+                    <button onclick="window.app.addToCart('${p.id}',1)">+</button>
+                  </div>`
+              }
+            </div>
           </div>
         </div>
       </div>`;
