@@ -518,6 +518,10 @@ class StoreApp {
     window.sendToWhatsApp = () => {
       this.sendOrderToWhatsApp(this.currentOrder);
     };
+
+    window.downloadQR = () => {
+      QRISPayment.downloadQR(this.currentOrder);
+    };
   }
 
   fallbackCopy(text) {
@@ -1091,7 +1095,8 @@ window.app = {
   // QRIS
   closeQRIS: window.closeQRIS,
   copyAmount: window.copyAmount,
-  sendToWhatsApp: window.sendToWhatsApp
+  sendToWhatsApp: window.sendToWhatsApp,
+  downloadQR: window.downloadQR
 };
 
 // Initialize
