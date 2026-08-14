@@ -1294,6 +1294,28 @@ img {
     cursor: pointer;
 }
 
+.filters-bar .category-select-wrapper {
+    min-width: 160px;
+}
+
+.filters-bar .category-select {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filters-bar .category-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(31, 77, 61, 0.10);
+}
+
 /* ============ RECEIPT ============ */
 .receipt {
     background: #fff;
@@ -2337,6 +2359,16 @@ img {
     }
     
     .filters-bar .filter-controls select {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .filters-bar .category-select-wrapper {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .filters-bar .category-select {
         padding: 8px 12px;
         font-size: 12px;
     }
