@@ -3,7 +3,7 @@ export class QRISPayment {
     static getStaticQR() {
         return {
             // Ganti dengan QRIS statis merchant Anda
-            imageUrl: 'assets/qris-static.png',
+            imageUrl: 'assets/qris-static.jpeg',
             qrString: '00020101021126670016COM.MIDTRANS.WWW011893600123456789021234567890303UMI51440114ID.CO.QRIS.WWW0215ID10221117450303UMI5204581253033605802ID5925TOKO ONLINE KITA6009JAKARTA61051234561070630A016'
         };
     }
@@ -48,7 +48,7 @@ export class QRISPayment {
                     
                     <div class="qris-body">
                         <div class="qris-code-container">
-                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" onerror="this.src='data:image/qris-static.png QRIS</text></svg>'">
+                            <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" onerror="this.src='data:image/qris-static.jpeg QRIS</text></svg>'">
                             <div class="qris-label">Scan QR Code dengan e-wallet atau mobile banking</div>
                         </div>
 
