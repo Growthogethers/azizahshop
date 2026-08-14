@@ -91,7 +91,7 @@ export class QRISPayment {
                             </div>
                             <div class="qris-instruction-step">
                                 <span class="step-number">3</span>
-                                <span class="step-text">Konfirmasi pembayaran di aplikasi Anda</span>
+                                <span class="step-text">Konfirmasi pembayaran VIA WHATSAPP</span>
                             </div>
                             <div class="qris-instruction-step highlight">
                                 <span class="step-number">📱</span>
