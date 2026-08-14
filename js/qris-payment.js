@@ -50,7 +50,7 @@ export class QRISPayment {
                         <div class="qris-code-container">
                             <img src="${qris.imageUrl}" alt="QRIS Code" class="qris-image" id="qrisImage" onerror="this.src='data:image/qris-static.jpeg QRIS</text></svg>'">
                             <div class="qris-label">Scan QR Code dengan e-wallet atau mobile banking</div>
-                            <button class="qris-download-btn" onclick="window.downloadQR()">
+                            <button class="qris-copy-btn" onclick="window.downloadQR()">
                                 ⬇️ Download QR
                             </button>
                         </div>
@@ -91,7 +91,7 @@ export class QRISPayment {
                             </div>
                             <div class="qris-instruction-step">
                                 <span class="step-number">3</span>
-                                <span class="step-text">Konfirmasi pembayaran VIA WHATSAPP</span>
+                                <span class="step-text">Konfirmasi pembayaran di aplikasi Anda</span>
                             </div>
                             <div class="qris-instruction-step highlight">
                                 <span class="step-number">📱</span>
