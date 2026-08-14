@@ -797,6 +797,112 @@ img {
     max-width: 700px;
 }
 
+/* ============ PRODUCT MODAL (index) — ukuran selalu konsisten ============ */
+.product-modal {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 640px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.product-modal .modal-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+    overflow: hidden;
+}
+
+.product-modal .modal-img {
+    flex-shrink: 0;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: var(--bg);
+    margin-bottom: 16px;
+}
+
+.product-modal .modal-img-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.product-modal .modal-title {
+    flex-shrink: 0;
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+    /* batasi ke maksimal 2 baris supaya tinggi konsisten walau nama panjang */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-modal .modal-price {
+    flex-shrink: 0;
+    margin-bottom: 12px;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.product-modal .modal-desc {
+    flex: 1;
+    min-height: 0;
+    margin-bottom: 12px;
+    padding-right: 4px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.product-modal .modal-stock {
+    flex-shrink: 0;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.product-modal .modal-action {
+    flex-shrink: 0;
+}
+
+.product-modal .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+}
+
+.product-modal .modal-close button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    color: var(--ink);
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: var(--transition);
+}
+
+.product-modal .modal-close button:hover {
+    background: #fff;
+    color: var(--danger);
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -2408,6 +2514,15 @@ img {
     
     .modal-price {
         font-size: 18px;
+    }
+
+    .product-modal {
+        height: 88vh;
+        max-height: 88vh;
+    }
+
+    .product-modal .modal-img {
+        height: 180px;
     }
     
     /* Checkout */
