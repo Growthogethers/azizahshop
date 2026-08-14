@@ -409,18 +409,62 @@ class StoreApp {
         return;
       }
 
-      const items = this.cart.map(c => {
-        const p = this.products.find(pp => pp.id === c.id);
-        return {
+      if (this.cart.length === 0) {
+        Notification.warning('Keranjang kosong');
+        return;
+      }
+
+      // ============ AMBIL HARGA & STOK TERBARU DARI SERVER ============
+      // Jangan percaya this.products (cache di memory browser) untuk
+      // menghitung total transaksi — data itu bisa saja sudah diubah
+      // lewat console/devtools sebelum checkout ditekan. Ambil ulang
+      // dari Firestore supaya harga & subtotal dihitung dari sumber asli.
+      let freshProducts;
+      try {
+        freshProducts = await getProducts();
+      } catch (err) {
+        console.error('Gagal mengambil data produk terbaru:', err);
+        Notification.error('Gagal memverifikasi data produk, silakan coba lagi');
+        return;
+      }
+
+      const items = [];
+      for (const c of this.cart) {
+        const p = freshProducts.find(pp => pp.id === c.id);
+
+        if (!p) {
+          Notification.error('Salah satu produk di keranjang sudah tidak tersedia');
+          return;
+        }
+        if (c.qty > p.stock) {
+          Notification.error(`Stok ${p.name} tersisa ${p.stock}, silakan sesuaikan jumlah`);
+          return;
+        }
+
+        items.push({
           id: p.id,
           name: p.name,
           qty: c.qty,
           price: p.price,
           subtotal: p.price * c.qty
-        };
-      });
+        });
+      }
 
-      const total = this.cartTotal() - this.promoDiscount;
+      const subtotal = items.reduce((sum, it) => sum + it.subtotal, 0);
+
+      // Re-validasi promo terhadap subtotal yang baru dihitung dari server,
+      // supaya diskon tidak dihitung dari total lama yang mungkin sudah tidak akurat.
+      let promoDiscount = 0;
+      if (this.promoCode) {
+        const promoResult = await PromoManager.applyPromo(this.promoCode, subtotal);
+        if (promoResult.valid) {
+          promoDiscount = promoResult.discount;
+        } else {
+          Notification.warning(promoResult.message || 'Promo sudah tidak berlaku, dihapus dari pesanan');
+        }
+      }
+
+      const total = subtotal - promoDiscount;
       const orderId = uid();
 
       const order = {
@@ -432,9 +476,10 @@ class StoreApp {
           keterangan: data.keterangan || ''
         },
         items,
+        subtotal,
         total,
-        promoCode: this.promoCode || null,
-        promoDiscount: this.promoDiscount || 0,
+        promoCode: promoDiscount > 0 ? this.promoCode : null,
+        promoDiscount,
         userId: this.user?.uid || null,
         userEmail: this.user?.email || null,
         status: 'Menunggu Pembayaran',
@@ -778,14 +823,14 @@ class StoreApp {
         </div>
 
         ${usedCategories.length > 0 ? `
-          <div class="category-tabs">
-            ${categoryTabs.map(c => `
-              <button type="button" 
-                      class="category-tab ${this.filters.category === c ? 'active' : ''}"
-                      onclick="window.app.filterByCategory('${c}')">
-                ${c === 'all' ? 'Semua' : escapeHtml(c)}
-              </button>
-            `).join('')}
+          <div class="category-select-wrapper">
+            <select class="category-select" onchange="window.app.filterByCategory(this.value)">
+              ${categoryTabs.map(c => `
+                <option value="${c}" ${this.filters.category === c ? 'selected' : ''}>
+                  ${c === 'all' ? 'Semua Kategori' : escapeHtml(c)}
+                </option>
+              `).join('')}
+            </select>
           </div>
         ` : ''}
 
