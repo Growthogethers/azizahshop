@@ -78,6 +78,9 @@ class StoreApp {
       // Load settings
       this.settings = await getSettings();
 
+      // Floating WhatsApp chat button (persistent, independent of cart bar)
+      this.initWhatsAppButton();
+
       // Listen to products
       this.unsubscribeProducts = listenProducts((products) => {
         this.products = products;
@@ -89,6 +92,7 @@ class StoreApp {
       // Listen to settings
       this.unsubscribeSettings = listenSettings((settings) => {
         this.settings = settings;
+        this.updateWhatsAppButton();
         this.render();
       });
 
@@ -109,6 +113,47 @@ class StoreApp {
   destroy() {
     if (this.unsubscribeProducts) this.unsubscribeProducts();
     if (this.unsubscribeSettings) this.unsubscribeSettings();
+  }
+
+  // ==========================================
+  // WHATSAPP FLOATING BUTTON
+  // ==========================================
+  initWhatsAppButton() {
+    if (document.getElementById('waFloatBtn')) {
+      this.updateWhatsAppButton();
+      return;
+    }
+
+    const btn = document.createElement('a');
+    btn.id = 'waFloatBtn';
+    btn.className = 'wa-float-btn';
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+    btn.setAttribute('aria-label', 'Chat via WhatsApp');
+    btn.title = 'Chat via WhatsApp';
+    btn.innerHTML = `
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.362.694 4.566 1.892 6.417L4 29l7.77-1.858A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm6.994 16.607c-.293.826-1.454 1.514-2.383 1.71-.634.132-1.462.238-4.252-.913-3.568-1.472-5.87-5.088-6.05-5.324-.176-.236-1.454-1.935-1.454-3.69 0-1.754.92-2.615 1.246-2.974.293-.32.638-.399.85-.399.213 0 .425.002.61.011.196.01.459-.074.718.548.267.638.906 2.206.986 2.367.08.16.133.348.027.56-.107.213-.16.346-.32.532-.16.187-.336.418-.48.561-.16.16-.327.334-.14.655.187.32.83 1.37 1.783 2.219 1.224 1.09 2.256 1.428 2.577 1.588.32.16.507.133.694-.08.187-.213.8-.933 1.014-1.253.213-.32.427-.267.72-.16.294.107 1.862.878 2.182 1.038.32.16.534.24.614.373.08.132.08.762-.213 1.588z"/>
+      </svg>
+    `;
+    document.body.appendChild(btn);
+    this.updateWhatsAppButton();
+  }
+
+  updateWhatsAppButton() {
+    const btn = document.getElementById('waFloatBtn');
+    if (!btn) return;
+
+    const waNumber = this.settings?.waNumber || CONFIG.DEFAULT_SETTINGS.waNumber;
+    const shopName = this.settings?.shopName || 'Toko Online';
+    const msg = `Halo ${shopName}, saya ingin bertanya tentang produk yang tersedia.`;
+    btn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+
+    if (this.cartCount() > 0 && this.view === 'store' && !this.showQRIS) {
+      btn.classList.add('with-cart-bar');
+    } else {
+      btn.classList.remove('with-cart-bar');
+    }
   }
 
   showError(title, message) {
@@ -748,6 +793,7 @@ class StoreApp {
       }
 
       this.bindEvents();
+      this.updateWhatsAppButton();
     } catch (error) {
       console.error('Render error:', error);
       this.showError('Terjadi kesalahan saat render', error.message);
