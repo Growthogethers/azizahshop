@@ -71,9 +71,11 @@
 
 <body>
     <div id="app">
-        <div style="padding:60px;text-align:center;color:var(--muted);">
-            <div style="font-size:40px;margin-bottom:20px;">⏳</div>
-            <div>Memuat toko...</div>
+        <div class="initial-loader" id="initialLoader">
+            <div class="loader-badge">🛍️</div>
+            <div class="loader-spinner" aria-hidden="true"></div>
+            <p class="loader-text">Memuat toko...</p>
+            <p class="loader-subtext">Mohon tunggu sebentar</p>
         </div>
     </div>
 
