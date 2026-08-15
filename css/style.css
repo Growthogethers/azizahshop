@@ -67,6 +67,115 @@ img {
     min-height: 100vh;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
+/* ============ INITIAL LOADER (first access splash) ============ */
+.initial-loader {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: var(--bg);
+    padding: 20px;
+    text-align: center;
+}
+
+.loader-badge {
+    font-size: 46px;
+    animation: loaderPulse 1.6s ease-in-out infinite;
+}
+
+.loader-spinner {
+    width: 38px;
+    height: 38px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: loaderSpin 0.8s linear infinite;
+}
+
+.loader-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.loader-subtext {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: -8px;
+}
+
+@keyframes loaderSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes loaderPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.12); opacity: .75; }
+}
+
+/* ============ WHATSAPP FLOATING BUTTON ============ */
+.wa-float-btn {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+    z-index: 90;
+    transition: bottom 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.wa-float-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #fff;
+}
+
+.wa-float-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+.wa-float-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #25D366;
+    animation: waPulseRing 2.2s ease-out infinite;
+    z-index: -1;
+}
+
+.wa-float-btn.with-cart-bar {
+    bottom: 92px;
+}
+
+@keyframes waPulseRing {
+    0% { transform: scale(1); opacity: .55; }
+    100% { transform: scale(1.9); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wa-float-btn::before,
+    .loader-badge,
+    .loader-spinner {
+        animation: none;
+    }
+}
+
 /* ============ ADMIN LOGIN ============ */
 .login-screen {
     min-height: 100vh;
@@ -2438,6 +2547,31 @@ img {
         min-width: 16px;
     }
     
+    /* Floating buttons */
+    .wa-float-btn {
+        width: 48px;
+        height: 48px;
+        left: 14px;
+        bottom: 14px;
+    }
+
+    .wa-float-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .wa-float-btn.with-cart-bar {
+        bottom: 82px;
+    }
+
+    .theme-toggle {
+        width: 42px;
+        height: 42px;
+        right: 14px;
+        bottom: 14px;
+        font-size: 20px;
+    }
+
     /* Store header */
     .store-header {
         padding: 20px 16px 18px;
@@ -2742,6 +2876,48 @@ img {
     
     .stat-card .stat-value {
         font-size: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 8px;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters-bar .search-box,
+    .filters-bar .category-select-wrapper,
+    .filters-bar .filter-controls,
+    .filters-bar .filter-controls select {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .cart-bar {
+        padding: 10px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .cart-bar button {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .wa-float-btn {
+        width: 44px;
+        height: 44px;
+        left: 10px;
+        bottom: 10px;
+    }
+
+    .wa-float-btn.with-cart-bar {
+        bottom: 76px;
     }
 }
 
