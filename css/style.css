@@ -120,9 +120,10 @@ html, body {
 }
 
 /* ============ WHATSAPP FLOATING BUTTON ============ */
+/* Diposisikan di kanan bawah, tepat di bawah tombol dark mode (.theme-toggle) */
 .wa-float-btn {
     position: fixed;
-    left: 20px;
+    right: 20px;
     bottom: 20px;
     width: 54px;
     height: 54px;
@@ -2551,7 +2552,7 @@ html, body {
     .wa-float-btn {
         width: 48px;
         height: 48px;
-        left: 14px;
+        right: 14px;
         bottom: 14px;
     }
 
@@ -2568,7 +2569,7 @@ html, body {
         width: 42px;
         height: 42px;
         right: 14px;
-        bottom: 14px;
+        bottom: 70px;
         font-size: 20px;
     }
 
@@ -2912,7 +2913,7 @@ html, body {
     .wa-float-btn {
         width: 44px;
         height: 44px;
-        left: 10px;
+        right: 10px;
         bottom: 10px;
     }
 
