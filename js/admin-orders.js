@@ -212,16 +212,22 @@ export class AdminOrders {
                                         <span class="mono">${rupiah(item.subtotal)}</span>
                                     </div>
                                 `).join('')}
-                                <div class="detail-total">
-                                    <span>Total</span>
-                                    <span class="mono">${rupiah(order.total)}</span>
-                                </div>
+                                ${typeof order.shippingFee === 'number' ? `
+                                    <div class="detail-promo">
+                                        <span>🚚 Ongkos Kirim</span>
+                                        <span class="mono">${order.freeShipping ? 'GRATIS' : rupiah(order.shippingFee)}</span>
+                                    </div>
+                                ` : ''}
                                 ${order.promoCode ? `
                                     <div class="detail-promo">
                                         <span>Promo: ${escapeHtml(order.promoCode)}</span>
                                         <span class="mono">-${rupiah(order.promoDiscount || 0)}</span>
                                     </div>
                                 ` : ''}
+                                <div class="detail-total">
+                                    <span>Total</span>
+                                    <span class="mono">${rupiah(order.total)}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -493,6 +499,12 @@ export class AdminOrders {
                             <span>Total</span>
                             <span>${rupiah(order.total)}</span>
                         </div>
+                        ${typeof order.shippingFee === 'number' ? `
+                            <div style="display:flex;justify-content:space-between;color:#666;font-size:14px;margin-top:5px;">
+                                <span>🚚 Ongkos Kirim</span>
+                                <span>${order.freeShipping ? 'GRATIS' : rupiah(order.shippingFee)}</span>
+                            </div>
+                        ` : ''}
                         ${order.promoCode ? `
                             <div style="display:flex;justify-content:space-between;color:#666;font-size:14px;margin-top:5px;">
                                 <span>Promo: ${escapeHtml(order.promoCode)}</span>
