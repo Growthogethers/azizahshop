@@ -337,6 +337,21 @@ class StoreApp {
   }
 
   // ==========================================
+  // ONGKIR / GRATIS ONGKIR
+  // ==========================================
+  isFreeShipping(subtotal) {
+    return subtotal >= CONFIG.FREE_SHIPPING_MIN_PURCHASE;
+  }
+
+  shippingFee(subtotal) {
+    return this.isFreeShipping(subtotal) ? 0 : CONFIG.SHIPPING_FEE;
+  }
+
+  shippingRemaining(subtotal) {
+    return Math.max(0, CONFIG.FREE_SHIPPING_MIN_PURCHASE - subtotal);
+  }
+
+  // ==========================================
   // PROMO
   // ==========================================
   async applyPromo(code) {
@@ -509,7 +524,8 @@ class StoreApp {
         }
       }
 
-      const total = subtotal - promoDiscount;
+      const shippingFee = this.shippingFee(subtotal);
+      const total = subtotal - promoDiscount + shippingFee;
       const orderId = uid();
 
       const order = {
@@ -522,6 +538,8 @@ class StoreApp {
         },
         items,
         subtotal,
+        shippingFee,
+        freeShipping: shippingFee === 0,
         total,
         promoCode: promoDiscount > 0 ? this.promoCode : null,
         promoDiscount,
@@ -638,11 +656,14 @@ class StoreApp {
     msg += `*Alamat:* ${order.customer.alamat}\n`;
     msg += `*Kurir:* ${order.customer.opsi}\n`;
     msg += `*Item:* ${itemsText}\n`;
-    msg += `*Total:* ${rupiah(order.total)}\n`;
+    msg += `*Subtotal:* ${rupiah(order.subtotal)}\n`;
+    msg += `*Ongkos Kirim:* ${order.freeShipping ? 'GRATIS 🎉' : rupiah(order.shippingFee)}\n`;
 
     if (order.promoCode) {
       msg += `*Promo:* ${order.promoCode} (diskon ${rupiah(order.promoDiscount)})\n`;
     }
+
+    msg += `*Total:* ${rupiah(order.total)}\n`;
 
     msg += `\n*Metode Pembayaran:* QRIS\n`;
     msg += `*Status:* Menunggu Konfirmasi Pembayaran\n\n`;
@@ -969,7 +990,12 @@ class StoreApp {
       const p = this.products.find(pp => pp.id === c.id);
       return { name: p.name, qty: c.qty, price: p.price, subtotal: p.price * c.qty };
     });
-    const total = this.cartTotal() - this.promoDiscount;
+    const subtotal = this.cartTotal();
+    const freeShipping = this.isFreeShipping(subtotal);
+    const shippingFee = this.shippingFee(subtotal);
+    const remaining = this.shippingRemaining(subtotal);
+    const shippingProgressPct = Math.min(100, Math.round((subtotal / CONFIG.FREE_SHIPPING_MIN_PURCHASE) * 100));
+    const total = subtotal - this.promoDiscount + shippingFee;
     const settings = this.settings || {};
 
     return `
@@ -990,13 +1016,38 @@ class StoreApp {
                 <span class="label">${escapeHtml(it.name)} ×${it.qty}</span>
                 <span class="val">${rupiah(it.subtotal)}</span>
               </div>`).join('')}
+
+            <!-- ============ FREE ONGKIR NOTICE (di bawah produk terakhir) ============ -->
+            ${freeShipping ? `
+              <div class="freeship-banner freeship-banner--active">
+                <span class="freeship-icon">🚚</span>
+                <span class="freeship-text"><strong>Selamat!</strong> Belanjamu dapat <strong>Gratis Ongkir</strong> 🎉</span>
+              </div>` : `
+              <div class="freeship-banner">
+                <div class="freeship-row">
+                  <span class="freeship-icon">🚚</span>
+                  <span class="freeship-text">Belanja <strong>${rupiah(remaining)}</strong> lagi untuk <strong>Gratis Ongkir</strong>!</span>
+                </div>
+                <div class="freeship-progress"><div class="freeship-progress-bar" style="width:${shippingProgressPct}%;"></div></div>
+                <div class="freeship-hint">Min. belanja ${rupiah(CONFIG.FREE_SHIPPING_MIN_PURCHASE)} untuk gratis ongkir</div>
+              </div>`}
+
+            <div class="receipt-divider"></div>
+            <div class="receipt-row">
+              <span class="label">Subtotal</span>
+              <span class="val">${rupiah(subtotal)}</span>
+            </div>
+            <div class="receipt-row">
+              <span class="label">🚚 Ongkos Kirim</span>
+              <span class="val">${freeShipping ? `<span class="freeship-strike">${rupiah(CONFIG.SHIPPING_FEE)}</span> <span class="freeship-tag">GRATIS</span>` : rupiah(shippingFee)}</span>
+            </div>
             ${this.promoDiscount > 0 ? `
               <div class="receipt-row" style="color:var(--success);">
                 <span class="label">💸 Diskon (${escapeHtml(this.promoCode)})</span>
                 <span class="val">-${rupiah(this.promoDiscount)}</span>
               </div>` : ''}
             <div class="receipt-divider"></div>
-            <div class="receipt-total"><span>Total</span><span class="val">${rupiah(total)}</span></div>
+            <div class="receipt-total"><span>Total Pembayaran</span><span class="val">${rupiah(total)}</span></div>
           </div>
           <div class="receipt-tear"></div>
         </div>
@@ -1025,13 +1076,22 @@ class StoreApp {
 
         ${settings.enableQRIS !== false ? `
           <div class="payment-methods">
-            <h4 style="margin:16px 0 8px;">💳 Metode Pembayaran</h4>
+            <h4 class="payment-methods-title">💳 Metode Pembayaran</h4>
             <div class="payment-option selected" onclick="document.querySelector('input[name=payment]').value='qris'">
-              <span>📱 QRIS</span>
-              <span style="font-size:11px;color:var(--muted);">Scan & bayar</span>
+              <span class="payment-option-icon">📱</span>
+              <span class="payment-option-info">
+                <span class="payment-option-name">QRIS</span>
+                <span class="payment-option-desc">Scan & bayar via e-wallet / m-banking</span>
+              </span>
+              <span class="payment-option-radio"></span>
             </div>
           </div>
           <input type="hidden" name="payment" value="qris">
+
+          <div class="payment-summary">
+            <span class="payment-summary-label">Total Pembayaran</span>
+            <span class="payment-summary-value">${rupiah(total)}</span>
+          </div>
         ` : ''}
 
         <form id="checkoutForm">
