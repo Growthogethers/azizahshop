@@ -1,6 +1,6 @@
 // js/config.js
 export const CONFIG = {
-    SHIPPING_OPTIONS: ['JNE', 'J&T', 'SiCepat', 'Anteraja', 'Lainnya'],
+    SHIPPING_OPTIONS: ['GOSEND', 'GRAB EXPRESS', 'PAXEL', 'JNE', 'Lainnya'],
     // Ongkos kirim flat & batas gratis ongkir. Ubah di sini saja — otomatis kepakai
     // di kalkulasi checkout, nota, dan pesan WhatsApp.
     SHIPPING_FEE: 10000,
