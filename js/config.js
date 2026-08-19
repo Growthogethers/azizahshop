@@ -1,6 +1,10 @@
 // js/config.js
 export const CONFIG = {
     SHIPPING_OPTIONS: ['JNE', 'J&T', 'SiCepat', 'Anteraja', 'Lainnya'],
+    // Ongkos kirim flat & batas gratis ongkir. Ubah di sini saja — otomatis kepakai
+    // di kalkulasi checkout, nota, dan pesan WhatsApp.
+    SHIPPING_FEE: 10000,
+    FREE_SHIPPING_MIN_PURCHASE: 100000,
     // Kategori produk. Tambah/ubah di sini saja — otomatis kepakai di form admin & filter belanja.
     CATEGORIES: ['Makanan', 'Minuman', 'Barang', 'Lainnya'],
     // Status yang konsisten dengan alur:
