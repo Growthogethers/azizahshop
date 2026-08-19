@@ -1608,6 +1608,85 @@ html, body {
     color: var(--primary);
 }
 
+/* ============ FREE ONGKIR BANNER ============ */
+.freeship-banner {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #FBF3E4;
+    border: 1px dashed var(--accent-dark);
+}
+
+.freeship-banner--active {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+}
+
+.freeship-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.freeship-icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.freeship-text {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.4;
+}
+
+.freeship-banner--active .freeship-text {
+    color: #2E7D32;
+}
+
+.freeship-progress {
+    height: 6px;
+    border-radius: 4px;
+    background: #EFE3C8;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.freeship-progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    transition: width 0.3s ease;
+}
+
+.freeship-hint {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.freeship-strike {
+    text-decoration: line-through;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+}
+
+.freeship-tag {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 8px;
+    border-radius: 20px;
+    background: #2E7D32;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
 /* ============ PAY BOX ============ */
 .pay-box {
     background: #FBF3E4;
@@ -2223,16 +2302,24 @@ html, body {
 
 /* ============ PAYMENT METHODS ============ */
 .payment-methods {
-    margin: 12px 0;
+    margin: 16px 0 12px;
+}
+
+.payment-methods-title {
+    margin: 0 0 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.2px;
 }
 
 .payment-option {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    gap: 12px;
+    padding: 14px 16px;
     border: 2px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
     transition: var(--transition);
     background: var(--paper);
@@ -2245,11 +2332,92 @@ html, body {
 .payment-option.selected {
     border-color: var(--primary);
     background: #f0f5f0;
+    box-shadow: 0 2px 8px rgba(31, 77, 61, 0.08);
 }
 
-.payment-option.selected::after {
-    content: '✅';
-    font-size: 16px;
+.payment-option-icon {
+    font-size: 22px;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+}
+
+.payment-option.selected .payment-option-icon {
+    border-color: var(--primary);
+    background: #fff;
+}
+
+.payment-option-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.payment-option-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.payment-option-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+}
+
+.payment-option-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+    transition: var(--transition);
+}
+
+.payment-option.selected .payment-option-radio {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.payment-option.selected .payment-option-radio::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* ============ PAYMENT SUMMARY (recap total sebelum bayar) ============ */
+.payment-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+}
+
+.payment-summary-label {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.payment-summary-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 /* ============ SESSION & RESTORE ============ */
